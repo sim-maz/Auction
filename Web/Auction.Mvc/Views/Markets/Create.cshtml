@@ -1,0 +1,112 @@
+﻿@model Auction.Domain.Market
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+<script>
+    Date.prototype.toDateInputValue = (function () {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    });
+</script>
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Market</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="details-div details-div-col-1">
+            <div class="form-group">
+                @Html.Label("Name", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MarketName, new { htmlAttributes = new { @class = "k-textbox" } })
+                    @Html.ValidationMessageFor(model => model.MarketName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Type", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MarketType, new { htmlAttributes = new { @class = "k-item k-input dropdown-list" } })
+                    @Html.ValidationMessageFor(model => model.MarketType, "", new { @class = "text-danger" })
+                </div>
+            </div>           
+        </div>
+        <div class="details-div details-div-col-2">
+            <div class="form-group">
+                @Html.Label("Start Date", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="col-md-10">
+                    <input id="datePickerStart" name="datePickerStart" class = "k-item datepicker option-list" /> 
+                    @Html.ValidationMessageFor(model => model.MarketStart, "", new { @class = "text-danger" })
+                    <script> 
+                        $(document).ready(function () {
+                            // create DatePicker from input HTML element
+                            $("#datePickerStart").kendoDatePicker();
+                        });
+                        document.getElementById('datePickerStart').value = new Date().toDateInputValue();
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Start Time", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="k-content">
+                    <input id="timePickerStart" value="10:00" name="timePickerStart" />
+                </div>
+                <script>
+                    $(document).ready(function () {
+                             // create TimePicker from input HTML element
+                        $("#timePickerStart").kendoTimePicker({
+                            format: "HH:mm"
+                        });
+                    });
+                </script>
+            </div>
+            <br />
+            <div class="form-group">
+                @Html.Label("End Date", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="col-md-10">
+                    <input id="datePickerEnd" name="datePickerEnd" class="k-item datepicker option-list" />
+                    @Html.ValidationMessageFor(model => model.MarketStart, "", new { @class = "text-danger" })
+                    <script>
+
+                        $(document).ready(function () {
+                            // create DatePicker from input HTML element
+                            $("#datePickerEnd").kendoDatePicker();
+                        });
+                        document.getElementById('datePickerEnd').value = new Date().toDateInputValue();
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("End Time", htmlAttributes: new { @class = "k-label col-md-2" })
+                <div class="k-content">
+                    <input id="timePickerEnd" value="10:00" name="timePickerEnd"/>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                             // create TimePicker from input HTML element
+                        $("#timePickerEnd").kendoTimePicker({
+                            format: "HH:mm"
+                        });
+                    });
+                </script>
+            </div>           
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">             
+                <input type="submit" value="Create" class="k-button btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    <br>
+    @Html.ActionLink("Back to List", "Index")
+</div>

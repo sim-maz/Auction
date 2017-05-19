@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Auction.Domain.Market>
+@{
+    ViewBag.Title = "Hello";
+    Layout = null;
+}
+<div data-role="view" data-init="onInit">
+    <div id="productsGrid"></div>
+</div>
+<script>
+    var productDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                // the remote service url
+                url: function(e){ 
+                    return '@Url.Action("GetProducts")' + '?MarketId=' + marketId;
+                },
+                // the request type
+                type: "get",
+
+                // the data type of the returned result
+                dataType: "json",
+
+                // additional custom parameters sent to the remote service
+                //data: {
+                //    lat: 42.42,
+                //    lon: 23.20,
+                //    cnt: 10
+                //}
+            },
+            update: {
+                url: "/Products/Update",
+                type: "GET",
+                dataType: "json"
+            },
+        },
+    });
+
+    $(document).ready(function () {
+        $("#productsGrid").kendoGrid({
+            dataSource: productDataSource,
+            height: 750,
+            groupable: false,
+            sortable: true,
+            mobile: true,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            noRecords: true,
+            columns: [{
+                field: "Name", width: "45%", template: '<a href="/Products/Details/#=Id#" class="k-link grid-link">#=Name#</a>'
+            }, {
+                field: "Category", width: "125px",
+            }, {
+                field: "Bid", format: "{0:C}",
+            }, {
+                field: "StartTime", title: "Starts", template: "#= kendo.toString(kendo.parseDate(StartTime, 'yyyy-MM-dd'), 'dd/MM/yyyy HH:mm') #",
+            }, {
+                field: "EndTime", title: "Ends", template: "#= kendo.toString(kendo.parseDate(EndTime, 'yyyy-MM-dd'), 'dd/MM/yyyy HH:mm') #",
+            }],
+            noRecords: {
+                template: "Please select a market from the list..."
+            },
+        });
+    });
+</script>
+
+@Html.ActionLink("Create New", "Create")
+@Html.ActionLink("Edit List", "Index", "Admin")
+

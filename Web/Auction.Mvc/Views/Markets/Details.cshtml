@@ -1,0 +1,51 @@
+﻿@model Auction.Domain.Market
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Market</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MarketStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MarketStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MarketEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MarketEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MarketType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MarketType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MarketStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MarketStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

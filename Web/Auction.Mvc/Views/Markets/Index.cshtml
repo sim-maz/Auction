@@ -1,0 +1,36 @@
+﻿@model List<Auction.Domain.Market>
+@{
+    ViewBag.Title = "Markets";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+@CurrentUser.Login
+
+@section SideBar{
+<div class="k-header">
+    <p align="center" id="auctions_header"><strong>MARKETS</strong></p>
+</div>
+@foreach (var item in Model)
+{
+    <div class="k-button nav-button">
+        <a href="Products/GetProducts?MarketId=@Html.DisplayFor(modelItem => item.Id)" onclick="reload('@Html.DisplayFor(modelItem => item.Id)');return false;" class="k-link nav-link">@Html.DisplayFor(modelItem => item.MarketName)</a>
+    </div>
+}
+}
+
+<script>
+    var marketId;
+    function reload(e) {
+        marketId = e;
+        $('#productsGrid').data('kendoGrid').dataSource.read();
+    }
+
+</script>
+
+@{
+    Html.RenderAction("Index", "Products");
+}
+
+<p>
+    Hello 
+</p>

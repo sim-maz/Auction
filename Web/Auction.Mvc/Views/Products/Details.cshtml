@@ -1,0 +1,67 @@
+﻿@model Auction.Domain.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+
+<script>
+    var highBid = '@(ViewBag.HighestBid)';
+    var min = parseInt(highBid.substr(0, highBid.length - 3)) + 1;
+</script>
+
+<div>
+    <h4>Details</h4>
+    @Html.ActionLink("Back to List", "Index", "Markets")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+    <hr />
+    <div class="details-div details-div-col-1 picture-div clearfix">
+        <a href="http://placehold.it"><img src="http://placehold.it/300x250"></a>
+    </div>
+    <div class="details-div details-div-col-2 ">
+        <p>
+            <strong>Description:</strong>
+        </p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus interdum tellus et rhoncus. Proin dapibus condimentum nunc, quis feugiat augue pulvinar sit amet. Mauris fringilla turpis vel nulla lacinia cursus. Donec at metus vel massa commodo porttitor vel ut lectus. Donec elementum ligula non odio sollicitudin sodales.
+        </p>
+        <hr />
+        <div class="details-div details-div-col-3">
+            <strong>Starting Bid:</strong> @Html.DisplayFor(model => model.StartBid)<br />
+            <strong>Current Bid:</strong> @(ViewBag.HighestBid) €<br />
+            <strong>Time Remaining:</strong> @(ViewBag.RemainingTime) <br />
+        </div>
+        <div class="details-div details-div-col-4">
+            @using (Html.BeginForm("Create","Bids"))
+            {
+                @Html.AntiForgeryToken()
+                <strong>Enter bid: </strong>
+                <input id="bidPlacing" name="Sum" class="k-input"/>
+                <input id="productId" name="ProductId" type="hidden" value="@Html.DisplayFor(model => model.Id)" />
+                <input id="startBid" name="StartBid" type="hidden" value="@Html.DisplayFor(model => model.StartBid)" />
+                <input value="Place Bid" type="submit"  class="k-button"/>
+            }
+        </div>
+    </div>   
+</div>
+<div>
+    <div class="bids-div" id="popup">
+        @{
+            Html.RenderAction("Index", "Bids", new { ProductId = Model.Id });
+        }
+    </div>
+</div>
+
+<script>
+    $("#bidPlacing").kendoNumericTextBox({
+        culture: "de-DE",
+        min: min,
+        max: 999999,
+        format: "c2"
+    });
+
+</script>
+
+

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Auction.Domain.Bid>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<script>
+var productId = '@(ViewBag.ProductId)';
+</script>
+<div id="bidsGrid"></div>
+<script>
+    var bidsDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                // the remote service url
+                url: function (p) {
+                    return '@Url.Action("GetBids", "Bids")' + '?ProductId=' + productId;
+                },
+                // the request type
+                type: "get",
+
+                // the data type of the returned result
+                dataType: "json",
+
+                // additional custom parameters sent to the remote service
+                //data: {
+                //    lat: 42.42,
+                //    lon: 23.20,
+                //    cnt: 10
+                //}
+
+            },
+        },
+        sort: { field: "Sum", dir: "desc" },
+    });
+    $(document).ready(function () {
+        $("#bidsGrid").kendoGrid({
+            dataSource: bidsDataSource,
+            groupable: false,
+            sortable: true,
+            scrollable: false,
+            columns: [{
+                field: "User",
+            }, {
+                field: "Sum", format: "{0:C}",
+            }, {
+                field: "BidTime", title: "Time", template: "#= kendo.toString(kendo.parseDate(BidTime, 'yyyy-MM-dd'), 'dd/MM/yyyy HH:mm') #",
+            }],
+        });
+    });
+</script>
