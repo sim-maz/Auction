@@ -1,4 +1,4 @@
-﻿@model Auction.Domain.Bid
+﻿@model Auction.Mvc.Models.BidDto
 
 @{
     ViewBag.Title = "Delete";
@@ -11,39 +11,60 @@
 <div>
     <h4>Bid</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Sum)
-        </dt>
+    <table class="dl-horizontal">
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Id)
+            </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.Sum)
-        </dd>
+            <td>
+                @Html.DisplayFor(model => model.Id)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductID)
-        </dt>
+            <td>
+                @Html.DisplayFor(model => model.ProductName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Sum)
+            </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductID)
-        </dd>
+            <td>
+                @Html.DisplayFor(model => model.Sum)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.BidTime)
+            </td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BidTime)
-        </dt>
+            <td>
+                @Html.DisplayFor(model => model.BidTime)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.User)
+            </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.BidTime)
-        </dd>
-
-    </dl>
+            <td>
+                @Html.DisplayFor(model => model.User)
+            </td>
+        </tr>
+    </table>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn k-button" /> |
+            @Html.ActionLink("Back to List", "Index", "Admin")
         </div>
     }
 </div>

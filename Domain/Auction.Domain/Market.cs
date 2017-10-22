@@ -16,6 +16,8 @@ namespace Auction.Domain
 
         public int MarketType { get; set; }
 
-        public int MarketStatus { get; set; }
+        public bool MarketStatus { get; set; }
+        
+        public bool MarketClosed { get; set; }
     }
 }

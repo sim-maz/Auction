@@ -16,7 +16,13 @@ namespace Auction.Mvc
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Products", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Markets", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Comments",
+                url: "{controller}/{action}/{productId}",
+                defaults: new { controller = "Comments", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

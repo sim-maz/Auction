@@ -6,21 +6,26 @@ using System.Web.Mvc;
 using Auction.Data.Ef;
 using Auction.Domain;
 using Auction.Mvc.Attributes;
-using Auctions.Mvc.Core;
+using Auction.Mvc.Core;
+using FluentScheduler;
+using System.Globalization;
 
 namespace Auction.Mvc.Controllers
 {
-
+    
     public class MarketsController : Controller
     {
-        private EfContext db = new EfContext();
+        private EfContext ctx = new EfContext();
 
          
 
         // GET: Markets
         public ActionResult Index()
         {
-            return View(db.Markets.Where(x => x.MarketStatus == 1).ToList());
+
+            ViewBag.Admin = CurrentUser.IsAdmin;
+            ViewBag.CurrentUser = CurrentUser.FullName;
+            return View(ctx.Markets.Where(x => x.MarketStatus == true).ToList());
         }
 
         // GET: Markets/Details/5
@@ -29,16 +34,17 @@ namespace Auction.Mvc.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Market market = db.Markets.Find(id);
+            Market market = ctx.Markets.Find(id);
             if (market == null)
                 return HttpNotFound();
 
             return View(market);
         }
 
-        
+
 
         // GET: Markets/Create
+        [RestrictedForAdmins]
         public ActionResult Create()
         {
             return View();
@@ -49,6 +55,7 @@ namespace Auction.Mvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RestrictedForAdmins]
         public ActionResult Create(FormCollection form)
         {
             //Creates Market object with ID, Name, Type, Start DateTime, End DateTime and Status. 
@@ -70,32 +77,33 @@ namespace Auction.Mvc.Controllers
 
 
             //Check if given date is later than DateTime.Now. Compares for start time and end time. 
-            if (!CompareDateTime(market.MarketStart))
+            if (CompareDateTime(market.MarketStart) < 0 && CompareDateTime(market.MarketEnd) > 0)
             {
-                if (CompareDateTime(market.MarketEnd))
-                {
-                    market.MarketStatus = 1;
-                }
+                market.MarketStatus = true;
             }
-            else market.MarketStatus = 0;
+            else
+            {
+                market.MarketStatus = false;
+            }
 
             if (ModelState.IsValid)
             {                
-                db.Markets.Add(market);
-                db.SaveChanges();
+                ctx.Markets.Add(market);
+                ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(market);
         }
 
         // GET: Markets/Edit/5
+        [RestrictedForAdmins]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Market market = db.Markets.Find(id);
+            Market market = ctx.Markets.Find(id);
             if (market == null)
             {
                 return HttpNotFound();
@@ -108,25 +116,28 @@ namespace Auction.Mvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,MarketStart,MarketEnd,MarketType,MarketStatus")] Market market)
+        [RestrictedForAdmins]
+        public ActionResult Edit([Bind(Include = "Id,MarketName,MarketStart,MarketEnd,MarketType,MarketStatus")] Market market)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(market).State = EntityState.Modified;
-                db.SaveChanges();
+                ctx.Entry(market).State = EntityState.Modified;
+                ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(market);
         }
 
         // GET: Markets/Delete/5
+        [RestrictedForAdmins]
         public ActionResult Delete(Guid? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Market market = db.Markets.Find(id);
+            Market market = ctx.Markets.Find(id);
             if (market == null)
             {
                 return HttpNotFound();
@@ -137,26 +148,23 @@ namespace Auction.Mvc.Controllers
         // POST: Markets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [RestrictedForAdmins]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Market market = db.Markets.Find(id);
-            db.Markets.Remove(market);
-            db.SaveChanges();
+            Market market = ctx.Markets.Find(id);
+            if (!ctx.ProductMarket.Any(x => x.MarketId == id))
+            {
+                ctx.Markets.Remove(market);
+                ctx.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
         //Compares a given date against DateTime.Now.
         //Returns a bool value true if given date is later.
-        private bool CompareDateTime (DateTime time)
+        private int CompareDateTime (DateTime time)
         {
-            bool result = new bool();
-            int i = DateTime.Compare(DateTime.Now, time);
-            if (i < 0)
-                result = false;
-
-            else
-                result = true;
-
+            int result = DateTime.Compare(time, DateTime.Now);
             return result;
         }
 
@@ -165,9 +173,10 @@ namespace Auction.Mvc.Controllers
         private DateTime ConcatenateDateTime (string date, string time)
         {
             var text = date + " " + time;
+            string pattern = "dd.MM.yyyy HH:mm";
             var current = new DateTime();
             var result = new DateTime();
-            if (DateTime.TryParse(text, out current))
+            if (DateTime.TryParseExact(text, pattern, null, DateTimeStyles.None, out current))
             {
                 result = current;
             }
@@ -182,7 +191,7 @@ namespace Auction.Mvc.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                ctx.Dispose();
             }
             base.Dispose(disposing);
         }

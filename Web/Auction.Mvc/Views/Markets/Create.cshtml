@@ -101,12 +101,12 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">             
-                <input type="submit" value="Create" class="k-button btn-default" />
+                <input type="submit" value="Create" class="k-button k-button" />
             </div>
         </div>
     </div>
 }
 <div>
     <br>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", "Admin", htmlAttributes: new { @class="k-button"})
 </div>

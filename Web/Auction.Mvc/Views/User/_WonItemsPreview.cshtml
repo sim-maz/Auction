@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Auction.Mvc.Models.UserDto>
+@{
+    Layout = null;
+}
+
+<div id="profile-div">
+    <div>
+        <h2 style="margin-left: 35px;"> Your won items: </h2>
+    </div>
+    <div style="margin-left: 35px; margin-right: 35px;">
+@if (Model.Count() == 0)
+{
+    <p>There are no items yet..</p>
+} else
+{
+    <table>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+               Category
+            </th>
+            <th>
+                Your bid
+            </th>
+        </tr>
+        @{ int i = 0;}
+        @foreach (var item in Model)
+        {
+            <tr class="clickable-row table-row" data-href='/Products/Details/@item.ProductId'>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentBid)
+                </td>
+            </tr>
+            i++;
+            if (i == 5) { break; }
+        }
+    </table>
+}
+    </div>
+    <div style="margin-right:35px; margin-left:35px;">
+        <p style="text-align:right; margin-top: 0px; margin-bottom: 0px;">@Html.ActionLink("View all...", "WonItems", null, htmlAttributes: new { @class = "k-link grid-link" })</p>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Auction.Mvc.Models.CommentDto>
+
+@{
+    Layout = null;
+}
+
+<h2>Comments: </h2>
+
+@if (Model.Count() == 0)
+{
+    <div >
+        <p>There are no comments yet...</p>
+    </div>
+}
+else
+{
+    <div>
+        @{ int i = 0; }
+        @foreach (var item in Model)
+        {
+            <div class="comment-div">
+                <div class="comment-div-author">
+                    Author: @Html.DisplayFor(model => item.User)
+                </div>
+                <div class="comment-div-time">
+                    Posted: @Html.DisplayFor(model => item.Time)
+                </div>
+                <div class="comment-div-text">
+                    @Html.Raw(item.Text)
+                </div>
+            </div>
+            i++;
+            if (i == 11) { break; }
+        }
+    </div>
+}
+    <div><a class="k-button" href="/Comments?productId=@(ViewBag.ProductId)">Comment...</a></div>
+

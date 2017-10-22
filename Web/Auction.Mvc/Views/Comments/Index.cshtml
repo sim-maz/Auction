@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Auction.Mvc.Models.CommentDto>
+
+@{
+    ViewBag.Title = "Comments";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+@if(ViewBag.ProductId != null) { 
+    <a class="k-button" href="/Products/Details/@(ViewBag.ProductId)">Back to item</a>
+}
+else
+{
+    <a class="k-button" href="/User/">Back to profile</a>
+
+}
+@if (Model.Count() == 0)
+{
+    <p>There are no comments yet...</p>
+}
+else
+{
+
+    <div style="margin-top: 10px;">
+        @foreach (var item in Model)
+        {
+            <div class="comment-div">
+                <div class="comment-div-author">
+                    Author: @Html.DisplayFor(model => item.User)
+                </div>
+                <div class="comment-div-time">
+                    Posted: @Html.DisplayFor(model => item.Time)
+                </div>
+                <div class="comment-div-text">
+                    @Html.Raw(item.Text)
+                </div>
+            </div>
+        }
+    </div>
+}
+@using (Html.BeginForm("Post", "Comments", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <textarea name="commentText" style="max-width: 1350px; width:100%; min-width: 300px;" rows="10" cols="30" required></textarea>
+    <input name="productId" type="hidden" value='@(ViewBag.ProductId)' />
+    <br />
+    <input type="submit" class="k-button" />
+}
+
+
+
+

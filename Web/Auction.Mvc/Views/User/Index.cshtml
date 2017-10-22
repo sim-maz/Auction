@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Auction.Mvc.Models.UserDto>
+@{
+    ViewBag.Title = CurrentUser.Login;
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+
+<div style="max-width: 1150px;">
+    <div id="profile-div">
+        <div class="details-col-15">
+            <img src="~/Images/profile/default.jpg">
+        </div>
+        <div class="details-div details-col-60">
+            <div class="details-div details-height-80">
+                <h1 class="text-center">
+                    @CurrentUser.FullName
+                </h1>
+            </div>
+            <div class="details-div details-col-100">
+                <div class="small-div">
+                    <span style="color:red;">
+                        (@((ViewBag.WatchedItem as IEnumerable<Auction.Mvc.Models.UserDto>).Count()))
+                    </span>
+                    @Html.ActionLink("items watching", "WatchedItems", null, htmlAttributes: new { @class = "k-link grid-link" })
+                </div>               
+                <div class="small-div" >
+                    <span style="color:red;">
+                        (@((ViewBag.WonItem as IEnumerable<Auction.Mvc.Models.UserDto>).Count()))
+                    </span>
+                    @Html.ActionLink("items won", "WonItems", null, htmlAttributes: new { @class = "k-link grid-link" })
+                </div>
+                <div class="small-div">
+                    <span style="color:red;">
+                        (@(ViewBag.Comments))
+                    </span>
+                    @Html.ActionLink("your comments", "Login", "Comments", null, htmlAttributes: new { @class = "k-link grid-link" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="profile-div">
+        <div>
+            <h2 style="overflow: auto; margin-left: 35px;">Currently bidding: </h2>
+        </div>
+        <div style="margin-left: 35px; margin-right: 35px;">         
+        @if (Model.Count() == 0)
+        {
+            <p>There are no items yet..</p>
+        }
+        else
+        {
+            <table>
+                <tr>
+                    <th style="width: 50%;">
+                        Item
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Current bid
+                    </th>
+                </tr>
+                @{ int i = 0;}
+                @foreach (var item in Model)
+                {
+                <tr class="clickable-row table-row" data-href='/Products/Details/@item.ProductId'>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrentBid)
+                    </td>
+                </tr>
+                    i++;
+                    if (i == 5) { break; }
+                }
+            </table>
+        }
+        </div>
+        <div style="margin-right:35px; margin-left:35px;">
+            <p style="text-align:right; margin-top: 0px; margin-bottom: 0px;">@Html.ActionLink("View all...", "WatchedItems", null, htmlAttributes: new { @class="k-link grid-link"})</p>
+        </div>
+    </div>
+    @{ 
+        Html.RenderAction("WonItemsPreview", "User");
+    }
+    @{
+        Html.RenderAction("PreviewUser", "Comments", CurrentUser.Login);
+    }
+</div>
+    </div>
+<script>
+
+    jQuery(document).ready(function ($) {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+
+</script>

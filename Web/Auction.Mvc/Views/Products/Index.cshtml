@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Auction.Domain.Market>
 @{
-    ViewBag.Title = "Hello";
+    ViewBag.Title = "Products";
     Layout = null;
 }
 <div data-role="view" data-init="onInit">
@@ -65,7 +65,7 @@
         });
     });
 </script>
-
-@Html.ActionLink("Create New", "Create")
-@Html.ActionLink("Edit List", "Index", "Admin")
-
+@if (CurrentUser.IsAdmin) { 
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class="k-button"})
+    @Html.ActionLink("Edit List", "Index", "Admin", null, htmlAttributes: new { @class = "k-button" })
+}

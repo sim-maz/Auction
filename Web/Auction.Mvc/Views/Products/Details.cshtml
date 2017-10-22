@@ -14,24 +14,32 @@
 
 <div>
     <h4>Details</h4>
-    @Html.ActionLink("Back to List", "Index", "Markets")
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+    @Html.ActionLink("Back to List", "Index", "Markets", null, htmlAttributes: new { @class = "k-button" })
+    
+    @if (CurrentUser.IsAdmin) { 
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, htmlAttributes: new { @class="k-button"})
+    }
     <hr />
     <div class="details-div details-div-col-1 picture-div clearfix">
-        <a href="http://placehold.it"><img src="http://placehold.it/300x250"></a>
+        <img src="/Images/@ViewBag.ImgPath" style="width: 300px; height: 250px;">
     </div>
     <div class="details-div details-div-col-2 ">
         <p>
             <strong>Description:</strong>
         </p>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus interdum tellus et rhoncus. Proin dapibus condimentum nunc, quis feugiat augue pulvinar sit amet. Mauris fringilla turpis vel nulla lacinia cursus. Donec at metus vel massa commodo porttitor vel ut lectus. Donec elementum ligula non odio sollicitudin sodales.
+            @if(Model.Description != null) { 
+                @Html.DisplayFor(model => model.Description)
+            } else
+            {
+                <span> There is no product description.</span>
+            }
         </p>
         <hr />
         <div class="details-div details-div-col-3">
             <strong>Starting Bid:</strong> @Html.DisplayFor(model => model.StartBid)<br />
             <strong>Current Bid:</strong> @(ViewBag.HighestBid) €<br />
-            <strong>Time Remaining:</strong> @(ViewBag.RemainingTime) <br />
+            <strong>Time Remaining:</strong> @Html.Raw(ViewBag.RemainingTime) <br />
         </div>
         <div class="details-div details-div-col-4">
             @using (Html.BeginForm("Create","Bids"))
@@ -50,6 +58,11 @@
     <div class="bids-div" id="popup">
         @{
             Html.RenderAction("Index", "Bids", new { ProductId = Model.Id });
+        }
+    </div>
+    <div>
+        @{ 
+            Html.RenderAction("Preview", "Comments", new { ProductId = Model.Id });
         }
     </div>
 </div>

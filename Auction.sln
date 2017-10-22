@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.Domain", "Domain\Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.Mvc", "Web\Auction.Mvc\Auction.Mvc.csproj", "{1DEFF154-F00E-4E33-846B-AB6F034B092D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationTest", "Web\WebApplicationTest\WebApplicationTest.csproj", "{8573F482-05E4-4EF7-998A-AF7BBC098FF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "..\FluentScheduler-master\Library\Library.csproj", "{434FED39-4EC1-4797-BB2D-246432B3D4FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{7E332C29-977D-44D1-877E-256D6E6FBF61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +37,10 @@ Global
 		{1DEFF154-F00E-4E33-846B-AB6F034B092D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DEFF154-F00E-4E33-846B-AB6F034B092D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DEFF154-F00E-4E33-846B-AB6F034B092D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8573F482-05E4-4EF7-998A-AF7BBC098FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8573F482-05E4-4EF7-998A-AF7BBC098FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8573F482-05E4-4EF7-998A-AF7BBC098FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8573F482-05E4-4EF7-998A-AF7BBC098FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{434FED39-4EC1-4797-BB2D-246432B3D4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{434FED39-4EC1-4797-BB2D-246432B3D4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{434FED39-4EC1-4797-BB2D-246432B3D4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{434FED39-4EC1-4797-BB2D-246432B3D4FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +49,28 @@ Global
 		{FC63FB41-FC01-48E3-BF84-F400E97A9E37} = {30366536-C04F-4671-A641-97B4813B62AF}
 		{3DD5E06F-F754-4122-8786-9C0E16B25E06} = {CF7B105D-3C04-43F6-AC3B-BD6311B869E3}
 		{1DEFF154-F00E-4E33-846B-AB6F034B092D} = {01253324-235E-4EEB-B6DC-25E868F71758}
+		{434FED39-4EC1-4797-BB2D-246432B3D4FD} = {7E332C29-977D-44D1-877E-256D6E6FBF61}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://alnasoftware.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Data\\Auction.Data.Ef\\Auction.Data.Ef.csproj
+		SccProjectTopLevelParentUniqueName1 = Auction.sln
+		SccProjectName1 = Data/Auction.Data.Ef
+		SccLocalPath1 = Data\\Auction.Data.Ef
+		SccProjectUniqueName2 = Domain\\Auction.Domain\\Auction.Domain.csproj
+		SccProjectTopLevelParentUniqueName2 = Auction.sln
+		SccProjectName2 = Domain/Auction.Domain
+		SccLocalPath2 = Domain\\Auction.Domain
+		SccProjectUniqueName3 = Web\\Auction.Mvc\\Auction.Mvc.csproj
+		SccProjectTopLevelParentUniqueName3 = Auction.sln
+		SccProjectName3 = Web/Auction.Mvc
+		SccLocalPath3 = Web\\Auction.Mvc
+		SccProjectUniqueName4 = ..\\FluentScheduler-master\\Library\\Library.csproj
+		SccProjectTopLevelParentUniqueName4 = Auction.sln
+		SccProjectName4 = ../FluentScheduler-master/Library
+		SccLocalPath4 = ..\\FluentScheduler-master\\Library
 	EndGlobalSection
 EndGlobal

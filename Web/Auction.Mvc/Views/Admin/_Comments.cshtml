@@ -1,0 +1,89 @@
+﻿
+@model IEnumerable<Auction.Domain.Comment>
+@{
+    Layout = null;
+}
+
+
+<h2>Comments</h2>
+
+<p>
+    
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="table-row">
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Comments", new { id = item.Id }, htmlAttributes: new { @class = "k-button" }) |
+                @Html.ActionLink("Delete", "Delete", "Comments", new { id = item.Id }, htmlAttributes: new { @class = "k-button", id="confirmation"})
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section AdminSideBar{
+
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Market [A]",
+        "Markets",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Product [A]",
+        "Products",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Comment [A]",
+        "Comments",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+    @Ajax.ActionLink(
+        "Bids [A]",
+        "Bids",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+
+}

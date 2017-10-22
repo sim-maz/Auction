@@ -8,14 +8,17 @@ using System.Web.Mvc;
 using Auction.Data.Ef;
 using Auction.Domain;
 using Auction.Mvc.Models;
+using Auction.Mvc.Core;
+using Auction.Mvc.Attributes;
 
 namespace Auction.Mvc.Controllers
 {
+    [Authorize]
     public class BidsController : Controller
     {
         private EfContext ctx = new EfContext();
 
-        // GET: Bids
+        // Returns a PartialView with ProductId added to the ViewBag
         public ActionResult Index(Guid ProductId)
         {
             ViewBag.ProductId = ProductId;
@@ -43,9 +46,6 @@ namespace Auction.Mvc.Controllers
             return View();
         }
 
-        // POST: Bids/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Sum, ProductId, StartBid")] Bid bid)
@@ -63,23 +63,30 @@ namespace Auction.Mvc.Controllers
             } else {
                 highBid = activeBids.Select(x => x.Sum).Max();
             };
-
-            if (ModelState.IsValid)
+            using (ctx)
             {
-                if (bid.Sum > highBid)
+                //Determines if the bid sum that was sent is actually higher than the last highest bid and saves the changes to DB.
+                if (ctx.Markets.Where(x => x.Id == (ctx.ProductMarket.Where(p => p.ProductId == productId).FirstOrDefault().MarketId)).FirstOrDefault().MarketEnd > DateTime.Now)
                 {
-                    bid.Id = Guid.NewGuid();
-                    bid.BidTime = DateTime.Now;
-                    bid.ProductId = productId;
-                    ctx.Bids.Add(bid);
-                    ctx.SaveChanges();
+                    if (ModelState.IsValid)
+                    {              
+                        if (bid.Sum > highBid)
+                        { 
+                            bid.Id = Guid.NewGuid();
+                            bid.BidTime = DateTime.Now;
+                            bid.ProductId = productId;
+                            bid.User = CurrentUser.Login;
+                            ctx.Bids.Add(bid);
+                            ctx.SaveChanges();
+                        }
+                    }
                 }
-            }
-      
-            return Redirect(Request.UrlReferrer.ToString());
+                return Redirect(Request.UrlReferrer.ToString());
+            }        
         }
 
         // GET: Bids/Edit/5
+        [RestrictedForAdmins]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -99,6 +106,7 @@ namespace Auction.Mvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RestrictedForAdmins]
         public ActionResult Edit([Bind(Include = "Id,Sum,ProductID,BidTime")] Bid bid)
         {
             if (ModelState.IsValid)
@@ -111,6 +119,7 @@ namespace Auction.Mvc.Controllers
         }
 
         // GET: Bids/Delete/5
+        [RestrictedForAdmins]
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -122,18 +131,28 @@ namespace Auction.Mvc.Controllers
             {
                 return HttpNotFound();
             }
-            return View(bid);
+
+            var bids = new BidDto();
+
+            bids.Id = bid.Id;
+            bids.ProductName = ctx.Products.Where(x => x.Id == bid.ProductId).FirstOrDefault().Name;
+            bids.Sum = bid.Sum;
+            bids.BidTime = bid.BidTime;
+            bids.User = bid.User;
+
+            return View(bids);
         }
 
-        // POST: Bids/Delete/5
+        // Deletes the bid from DB
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [RestrictedForAdmins]
         public ActionResult DeleteConfirmed(Guid id)
         {
             Bid bid = ctx.Bids.Find(id);
             ctx.Bids.Remove(bid);
             ctx.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Admin");
         }
 
         protected override void Dispose(bool disposing)
@@ -145,6 +164,8 @@ namespace Auction.Mvc.Controllers
             base.Dispose(disposing);
         }
 
+
+        //Gets the active bids that match the given ProductId and sends Json data for populating the Kendo UI grid.
         public JsonResult GetBids(Guid ProductId)
         {
             var data = new List<BidDto>();
@@ -153,11 +174,12 @@ namespace Auction.Mvc.Controllers
             {
                 var activeBids = from p1 in ctx.Bids
                                  where p1.ProductId == ProductId
-                                 select new BidDto { Id = p1.Id, ProductId = p1.ProductId, BidTime = p1.BidTime, Sum = p1.Sum };
+                                 select new BidDto { Id = p1.Id, User = p1.User, ProductId = p1.ProductId, BidTime = p1.BidTime, Sum = p1.Sum };
 
                 data = activeBids.Select(x => new BidDto
                 {
                     Id = x.Id,
+                    User = x.User,
                     ProductId = ctx.Products.FirstOrDefault(p => p.Id == x.ProductId).Id,
                     BidTime = x.BidTime,
                     Sum = x.Sum

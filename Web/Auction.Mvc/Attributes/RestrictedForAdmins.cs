@@ -1,5 +1,5 @@
 ﻿
-using Auctions.Mvc.Core;
+using Auction.Mvc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

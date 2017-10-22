@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Auction.Mvc.Models.CommentDto>
+
+@{
+    Layout = null;
+}
+<div id="profile-div">
+    <h2 style="overflow: auto; margin-left: 35px;">Comments: </h2>
+
+    @if (Model.Count() == 0)
+    {
+        <div style="margin-left: 35px;">
+            <p>There are no comments yet...</p>
+        </div>
+    }
+    else
+    {
+        <div style="margin-left: 35px;">
+            <table>
+                <tr>
+                    <th>
+                        Comment
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                </tr>
+                @{ int i = 0; }
+                @foreach (var item in Model)
+                {
+                    <tr class="clickable-row table-row" data-href='/Comments?productId=@item.ProductId'>
+                        <td>
+                            @Html.Raw(item.Text)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Time)
+                        </td>
+                    </tr>
+                    i++;
+                    if (i == 5) { break; }
+                }
+            </table>
+        </div>
+     }
+    <div style="margin-right:35px; margin-left:35px;">
+        <p style="text-align:right; margin-top: 0px; margin-bottom: 0px;">
+            <a class="k-link grid-link" href='/Comments/Login?login=@CurrentUser.Login'>View all...</a>
+        </p>
+    </div>
+</div>

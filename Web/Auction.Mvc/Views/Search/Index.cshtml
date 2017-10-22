@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Auction.Mvc.Models.ProductDto>
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+<div data-role="view" data-init="onInit">
+    <div id="productsGrid"></div>
+</div>
+<script>
+    var values = @Html.Raw(Json.Encode(Model));
+    var productDataSource = new kendo.data.DataSource({
+        data: values
+    });
+
+    $(document).ready(function () {
+        $("#productsGrid").kendoGrid({
+            dataSource: productDataSource,
+            height: 750,
+            groupable: false,
+            sortable: true,
+            mobile: true,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            noRecords: true,
+            columns: [{
+                field: "Name", width: "45%", template: '<a href="/Products/Details/#=Id#" class="k-link grid-link">#=Name#</a>'
+            }, {
+                field: "Category",
+            }, {
+                field: "Bid", format: "{0:C}",
+            }, {
+                field: "StartTime", title: "Starts", template: "#= kendo.toString(kendo.parseDate(StartTime, 'yyyy-MM-dd'), 'dd/MM/yyyy HH:mm') #",
+            }, {
+                field: "EndTime", title: "Ends", template: "#= kendo.toString(kendo.parseDate(EndTime, 'yyyy-MM-dd'), 'dd/MM/yyyy HH:mm') #",
+            }],
+            noRecords: {
+                template: "No results were found..."
+            },
+        });
+    });
+</script>

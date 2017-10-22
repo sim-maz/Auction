@@ -12,8 +12,12 @@ namespace Auction.Mvc.Models
         public decimal Sum { get; set; }
 
         public Guid ProductId { get; set; }
+        
+        public string ProductName { get; set; }
 
         public DateTime BidTime { get; set; }
+
+        public string User { get; set; }
 
     }
 }

@@ -32,6 +32,12 @@
                 @Html.DropDownList("MarketsList",null, htmlAttributes: new { @class = "k-item k-input dropdown-list", @Name = "MarketName" })
             </div>
         </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Image path</span>
+            <div>
+                @Html.TextAreaFor(model => model.ImgPath, htmlAttributes: new { @class = "k-textbox", @Name = "ImagePath" })
+            </div>
+        </div>
     </div>
     <div class="details-div details-div-col-2">
         <div class="form-group">
@@ -53,6 +59,7 @@
             @Html.Label("Bid Duration", htmlAttributes: new { @class = "k-label col-md-2" })
             <div class="col-md-10">
                 <select name="Duration" id="Duration" class="k-item k-input option-list" required>
+                    <option value="0">Market</option>
                     <option value="1">1 Day</option>
                     <option value="3">3 Days</option>
                     <option value="5">5 Days</option>
@@ -61,14 +68,19 @@
                 </select>
             </div>
         </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div>
+            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "k-textbox description-box" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
     </div>        
         <br>
 </div>
 <div class="form-group details-div-col-2">
     <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Create" class="k-button btn-default" />
+        <input type="submit" value="Create" class="k-button k-button" />
     </div>
-    <br>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 }

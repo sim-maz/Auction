@@ -18,5 +18,9 @@ namespace Auction.Domain
         public Guid ProductId { get; set; }
 
         public DateTime BidTime { get; set; }
+
+        public string User { get; set; }
+
+        public bool Winner { get; set; }
     }
 }

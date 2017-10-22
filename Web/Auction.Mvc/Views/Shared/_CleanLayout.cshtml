@@ -28,31 +28,37 @@
 </head>
 <body>
     <div>
-    <div class="k-header nav-top">
-                Lorem ipsum: 
-    </div>
-        <div class="sidebar" >
+    @{
+        Html.RenderAction("Index", "Home");} @*RenderPage("~/Views/Home/Index.cshtml")*@
+    <div class="sidebar" >
+        <aside>
+            <nav>
+                @if(IsSectionDefined("SideBar")) {
+                    @RenderSection("SideBar", required: true)
+                } else
+                {
+                    <div class="k-button nav-button">@Html.ActionLink("Markets", "Index", "Markets", null, new { @class = "k-link nav-link" })</div>
+                }
+            </nav>
+        </aside>
+        @if (IsSectionDefined("AdminSideBar"))
+        {
             <aside>
                 <nav>
-                    @if (IsSectionDefined("SideBar")) {
-                        @RenderSection("SideBar", required: true)
-                    }
-                    else
-                    {
-                        <div class="k-button nav-button">@Html.ActionLink("Markets", "Index", "Markets", null, new { @class = "k-link nav-link" })</div>
-                    }
+                    @RenderSection("AdminSideBar", required: false)
                 </nav>
             </aside>
-        </div>
-        <div class="body-grid">
-            @RenderBody()
-        </div>
-        <div class="footer">
-            <footer>
-                <hr />
-                <p>&copy; @DateTime.Now.Year</p>
-            </footer>
-        </div>
+        }
+    </div>
+    <div class="body-grid">
+        @RenderBody()
+    </div>
+    <div class="footer">
+        <footer>
+            <hr />
+            <p>&copy; @DateTime.Now.Year</p>
+        </footer>
+    </div>
     </div>
 </body>
 </html>

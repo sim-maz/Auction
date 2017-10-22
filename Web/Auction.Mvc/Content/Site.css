@@ -8,6 +8,7 @@ body {
     padding-right: 15px;
     padding-left: 15px;
     padding-bottom: 20px;
+    margin-right: 17px;
 }
 
 header, body, footer {
@@ -16,10 +17,15 @@ header, body, footer {
 
 table {
     border-collapse: collapse;
+    width:100%;
+}
+
+tr{
+    text-align:left;
 }
 
 th {
-    background-color: #1d44fc;
+    background-color: #4c5356;
     color: white;
 }
 
@@ -39,15 +45,74 @@ th {
     margin-top: 15px;
     margin-bottom: 5px;
     display: inline-block;
+}
 
+.center {
+    margin: auto;
+    width: 50%;
 }
 
 .clearfix {
   overflow: auto;
 }
 
+.comment-div {
+    background-color: white;
+    border: solid 1px whitesmoke;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 1px grey;
+}
+
+.comment-div-author {
+    margin-left: 5px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.comment-div-time {
+    margin-top: 5px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.comment-div-text {
+    display:block;
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    border: solid 1px whitesmoke;
+     
+}
+
 .datepicker {
     color: #4c5356;
+}
+
+.details-col-15 {
+    display: inline-block;
+    margin-top: 35px;
+    margin-bottom: 40px;
+    margin-left: 35px;
+    width: 200px;
+    min-width: 200px;
+}
+
+.details-col-60 {
+    margin-left: 20px;
+    margin-top: 40px;
+    width: 60%;
+    min-width: 300px;
+    vertical-align: top;
+}
+
+.details-height-80 {
+    height: 100px;
+    vertical-align: middle;
+}
+
+.details-col-100 {
+    width: 100%;
 }
 
 .details-div {
@@ -62,7 +127,7 @@ th {
 }
 
 .details-div-col-2{
-    width:75%;
+    width:76%;
     float: left;
 
 }
@@ -117,6 +182,30 @@ th {
     border-radius: 0px !important; 
 }
 
+.nav-div {
+    display: inline-flex;
+   
+}
+
+.nav-div-left {
+    float: left;
+    margin-top: 0px;
+}
+
+.nav-div-mid {
+    overflow: auto;
+    display: block;
+}
+
+.nav-div-right {
+    float: right;
+    margin-right: 0px;
+}
+
+.nav-div-col {
+    width: 290px;
+}
+
 .nav-link {
     display: inline-block;
     width: 100%;
@@ -125,10 +214,37 @@ th {
 
 .nav-top {
     height: 80px; 
+    align-content: stretch;
 }
 
 .picture-div {
     min-height:250px;
+}
+
+.search-bar {
+    text-indent: 15px;
+    height: 35px;
+    margin-top: 20px;
+    margin-right: 0px;
+    max-width: 65%;
+    min-width: 55%;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+    border-right: 0px;
+    display: block;
+    float: right;
+}
+
+.search-button{
+    height: 45px;
+    margin-top: 20px;
+    width:55px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display:block;
+    float: right;
+    margin-right:35px;
+    text-indent: -3px;
 }
 
 .sidebar {
@@ -139,10 +255,24 @@ th {
     clear:both;
 }
 
+.small-div {
+    display: inline-block;
+    width: 200px;
+}
+
 .table-div {
     overflow-x:auto;
 }
 
+.table-row:hover {
+    background-color: #10c4b2;
+    cursor: pointer; 
+}
+
+.x-small-div {
+    display: inline-block;
+    width: 100px;
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -167,8 +297,50 @@ th {
    overflow-y: visible;
 }
 
+#CategoriesSearch {
+    /*for firefox*/
+    -moz-appearance: none;
+    /*for chrome*/
+    -webkit-appearance:none;
+    text-indent: 5px;
+    text-overflow: '';
+    width: 8%;
+    min-width: 70px;
+    height: 45px;
+    margin-top: 20px;
+    padding-left: 0px;
+    border-left: 0px;
+    border-radius: 0px;
+    display: block;
+    float: right;
+}
+
+#CategoriesSearch:hover{
+    color: #fff;
+    border-color: #2eb3a6;
+    background-color: #2eb3a6;
+}
+
+/*for IE10*/
+#categorySearch::-ms-expand {
+    display: none;
+}
+
+#Description {
+    width: 280px !important;
+    height: 80px !important;
+    white-space: normal !important;
+}
+
 #productsGrid {
     height: inherit !important;
+}
+
+#profile-div {
+    background-color: whitesmoke;
+    border: solid 1px whitesmoke;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 1px grey;
 }
 
 #enterBid {
@@ -204,7 +376,24 @@ textarea {
     .sidebar {
         width: 300px;
     }
+    #profile-div {
+        min-width: 300px;    }
 
+}
+
+@media screen and (max-width: 1052px){
+    .nav-div-mid {
+        display: inline-flex;
+        float: none;
+        width: 300px;
+        margin-right: 100px;
+    }
+    .search-bar {
+        width:100px;
+    }
+    .nav-div-right {
+        float: left;
+    }
 }
 
 @media screen and (max-width: 1457px){

@@ -22,11 +22,15 @@ namespace Auction.Data.Ef
 
         public DbSet<ProductMarket> ProductMarket {get; set;}
 
-        public List<string> AppAdmins
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public List<string> Admins
         {
             get
             {
-                return Database.SqlQuery<string>("select Name from dbo.AppAdmins").ToList();
+                return Database.SqlQuery<string>("select Name from dbo.ADMINS").ToList();
             }
         }
 
@@ -44,7 +48,8 @@ namespace Auction.Data.Ef
             modelBuilder.Entity<Product>().Property(x => x.StartBid).HasColumnName("prd_start_bid");
             modelBuilder.Entity<Product>().Property(x => x.StartTime).HasColumnName("prd_start_time");
             modelBuilder.Entity<Product>().Property(x => x.EndTime).HasColumnName("prd_end_time");
-            modelBuilder.Entity<Product>().Property(x => x.Duration).HasColumnName("prd_bid_dur");  
+            modelBuilder.Entity<Product>().Property(x => x.Duration).HasColumnName("prd_bid_dur");
+            modelBuilder.Entity<Product>().Property(x => x.Description).HasColumnName("prd_desc"); 
 
             modelBuilder.Entity<Category>().ToTable("PRODUCT_TYPES");
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
@@ -57,6 +62,8 @@ namespace Auction.Data.Ef
             modelBuilder.Entity<Bid>().Property(b => b.Sum).HasColumnName("bid_sum");
             modelBuilder.Entity<Bid>().Property(b => b.ProductId).HasColumnName("bid_prd_id");
             modelBuilder.Entity<Bid>().Property(b => b.BidTime).HasColumnName("bid_date");
+            modelBuilder.Entity<Bid>().Property(b => b.User).HasColumnName("bid_user");
+            modelBuilder.Entity<Bid>().Property(b => b.Winner).HasColumnName("bid_win");
 
             modelBuilder.Entity<Market>().ToTable("MARKETS");
             modelBuilder.Entity<Market>().HasKey(m => m.Id);
@@ -66,12 +73,27 @@ namespace Auction.Data.Ef
             modelBuilder.Entity<Market>().Property(m => m.MarketEnd).HasColumnName("mrkt_end");
             modelBuilder.Entity<Market>().Property(m => m.MarketStatus).HasColumnName("mrkt_status");
             modelBuilder.Entity<Market>().Property(m => m.MarketType).HasColumnName("mrkt_type_id");
+            modelBuilder.Entity<Market>().Property(m => m.MarketClosed).HasColumnName("mrkt_closed");
 
             modelBuilder.Entity<ProductMarket>().ToTable("MRKT_PROD");
             modelBuilder.Entity<ProductMarket>().HasKey(i => i.Id);
             modelBuilder.Entity<ProductMarket>().Property(i => i.Id).HasColumnName("mrkt_prod_id");
             modelBuilder.Entity<ProductMarket>().Property(i => i.MarketId).HasColumnName("mrkt_id");
             modelBuilder.Entity<ProductMarket>().Property(i => i.ProductId).HasColumnName("prd_id");
+
+            modelBuilder.Entity<Comment>().ToTable("COMMENTS");
+            modelBuilder.Entity<Comment>().HasKey(j => j.Id);
+            modelBuilder.Entity<Comment>().Property(j => j.Id).HasColumnName("com_id");
+            modelBuilder.Entity<Comment>().Property(j => j.Text).HasColumnName("com_text");
+            modelBuilder.Entity<Comment>().Property(j => j.User).HasColumnName("com_user");
+            modelBuilder.Entity<Comment>().Property(j => j.Time).HasColumnName("com_time");
+            modelBuilder.Entity<Comment>().Property(j => j.ProductId).HasColumnName("com_prd_id");
+
+            modelBuilder.Entity<Image>().ToTable("IMAGES");
+            modelBuilder.Entity<Image>().HasKey(i => i.Id);
+            modelBuilder.Entity<Image>().Property(i => i.Id).HasColumnName("img_id");
+            modelBuilder.Entity<Image>().Property(i => i.ProductId).HasColumnName("img_prd_id");
+            modelBuilder.Entity<Image>().Property(i => i.Path).HasColumnName("img_file");
         }
     }
 }

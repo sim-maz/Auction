@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Auction.Mvc.Models.UserDto>
+
+@{
+    ViewBag.Title = "Comments";
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+<a class="k-button" href="/User/">Back to profile</a>
+
+@if (Model.Count() == 0)
+{
+    <p>There are no items yet..</p>
+}
+else
+{
+    
+    <div style="margin-top: 10px;">
+        <table>
+            <tr>
+                <th>
+                    Item 
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Current bid
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr class="clickable-row table-row" data-href='/Products/Details/@item.ProductId'>
+                    <td >
+                        @Html.DisplayFor(model => item.ProductName)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(model => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrentBid)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<script>
+
+    jQuery(document).ready(function ($) {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+
+</script>
+
+
+
+
+

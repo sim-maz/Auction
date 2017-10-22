@@ -10,7 +10,6 @@ namespace Auction.Domain
         public Product()
         {
             Id = Guid.NewGuid();
-            StartTime = DateTime.Now;
         }
 
         public Guid Id { get; set; }
@@ -28,5 +27,7 @@ namespace Auction.Domain
         public double Duration { get; set; }
 
         public DateTime EndTime { get; set; }
+
+        public string Description { get; set; }
     }
 }

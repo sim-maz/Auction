@@ -1,24 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Auction.Data.Ef;
 using Auction.Domain;
+using Auction.Mvc.Attributes;
+using Auction.Mvc.Models;
 
 namespace Auction.Mvc.Controllers
 {
+    [RestrictedForAdmins]
     public class AdminController : Controller
     {
-        private EfContext db = new EfContext();
+        private EfContext ctx = new EfContext();
 
         // GET: ListProducts
         public ActionResult Index()
         {
-            return View(db.Products.ToList());
+            return PartialView();
+        }
+
+        public ActionResult Products()
+        {
+            return PartialView("_Products", ctx.Products.ToList());
+        }
+
+        public ActionResult Markets()
+        {
+            return PartialView("_Markets", ctx.Markets.ToList());
+        }
+
+        public ActionResult Comments()
+        {
+            return PartialView("_Comments", ctx.Comments.ToList());
+        }
+
+        public ActionResult Bids()
+        {
+            var bids = ctx.Bids.Select(x => new BidDto {
+                Id = x.Id,
+                BidTime = x.BidTime,
+                ProductName = ctx.Products.Where(p => p.Id == x.ProductId).FirstOrDefault().Name,
+                Sum = x.Sum,
+                User = x.User
+            }).ToList();
+
+            return PartialView("_Bids", bids);
         }
 
         // GET: ListProducts/Details/5
@@ -28,7 +56,7 @@ namespace Auction.Mvc.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            Product product = ctx.Products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -52,8 +80,8 @@ namespace Auction.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 product.Id = Guid.NewGuid();
-                db.Products.Add(product);
-                db.SaveChanges();
+                ctx.Products.Add(product);
+                ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +95,7 @@ namespace Auction.Mvc.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            Product product = ctx.Products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -84,8 +112,8 @@ namespace Auction.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
+                ctx.Entry(product).State = EntityState.Modified;
+                ctx.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(product);
@@ -98,7 +126,7 @@ namespace Auction.Mvc.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            Product product = ctx.Products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -111,9 +139,9 @@ namespace Auction.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
+            Product product = ctx.Products.Find(id);
+            ctx.Products.Remove(product);
+            ctx.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +149,7 @@ namespace Auction.Mvc.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                ctx.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Auction.Mvc.Core;
+using FluentScheduler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +18,7 @@ namespace Auction.Mvc
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            JobManager.Initialize(new TaskRegistry());
         }
     }
 }

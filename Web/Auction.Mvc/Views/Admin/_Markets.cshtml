@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Auction.Domain.Market>
+@{
+    Layout = null;
+}
+
+<h2>Markets</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "Markets", null, htmlAttributes: new { @class="k-button"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketClosed)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="table-row">
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketClosed)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Markets", new { id = item.Id }, htmlAttributes: new { @class = "k-button" }) |
+                @Html.ActionLink("Details", "Details", "Markets", new { id = item.Id }, htmlAttributes: new { @class = "k-button" }) |
+                @Html.ActionLink("Delete", "Delete", "Markets", new { id = item.Id }, htmlAttributes: new { @class = "k-button" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section AdminSideBar{
+
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Market [A]",
+        "Markets",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Product [A]",
+        "Products",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+        @Ajax.ActionLink(
+        "Comment [A]",
+        "Comments",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+    <div class="k-button nav-button">
+    @Ajax.ActionLink(
+        "Bids [A]",
+        "Bids",
+        "Admin",
+        new AjaxOptions { UpdateTargetId = "result" }
+    )
+    </div>
+
+}
